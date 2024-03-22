@@ -16,6 +16,7 @@ model Account {
   refresh_token            String? @db.Text
   access_token             String? @db.Text
   expires_at               Int?
+  id_token                 String?
   token_type               String?
   scope                    String?
   session_state            String?
@@ -34,15 +35,22 @@ model Session {
   user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
 }
 
+enum UserRole {
+  USER
+  ADMIN
+}
+
 model User {
-  id       String     @id @default(cuid())
-  name     String?
-  email    String?    @unique
-  image    String?
-  accounts Account[]
-  sessions Session[]
-  Progress Progress[]
-  Course   Course[]
+  id            String     @id @default(cuid())
+  name          String?
+  email         String?    @unique
+  emailVerified Boolean?
+  image         String?
+  role          UserRole   @default(USER)
+  accounts      Account[]
+  sessions      Session[]
+  Progress      Progress[]
+  Course        Course[]
 }
 
 model Course {
