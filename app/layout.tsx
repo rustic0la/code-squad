@@ -3,7 +3,8 @@ import { Inter } from "next/font/google";
 import { ReactNode } from "react";
 import "./globals.css";
 import { Navbar } from "@/components/Navbar";
-import { Sidebar } from "@/components/Sidebar";
+
+export const revalidate = 0;
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -40,8 +41,9 @@ export default async function RootLayout({
       </head>
       <body className={inter.className}>
         <Navbar />
-        <Sidebar />
-        {children}
+        <div className="w-full fixed bg-gray-100 h-[calc(100vh-65px)] top-[60px] p-10 overflow-scroll">
+          {children}
+        </div>
       </body>
     </html>
   );

@@ -54,15 +54,17 @@ model User {
 }
 
 model Course {
-  id        String     @id @default(cuid())
-  title     String
-  modules   Module[]
-  createdAt DateTime   @default(now())
-  Lesson    Lesson[]
-  published Boolean    @default(false)
-  author    User       @relation(fields: [userId], references: [id])
-  userId    String
-  Progress  Progress[]
+  id          String     @id @default(cuid())
+  title       String
+  description String?
+  image       String?
+  modules     Module[]
+  createdAt   DateTime   @default(now())
+  Lesson      Lesson[]
+  published   Boolean    @default(false)
+  author      User       @relation(fields: [userId], references: [id])
+  userId      String
+  Progress    Progress[]
 }
 
 model Module {

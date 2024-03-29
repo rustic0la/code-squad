@@ -2,7 +2,7 @@ import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { Dialog, DialogTrigger } from "@/components/ui/dialog";
 import { Login } from "@/components/Login";
-import Logo from "@/public/images/logo-dark.png";
+import Logo from "@/public/images/logo.png";
 import Image from "next/image";
 import { Input } from "@/components/ui/input";
 import { MdSearch } from "react-icons/md";
@@ -15,12 +15,12 @@ export const Navbar = async () => {
 
   return (
     <Dialog>
-      <div className="fixed bg-slate-200 w-full p-2 flex items-center justify-between border-b-0 border-slate-200">
+      <div className="fixed bg-slate-200 w-full p-2 flex items-center justify-between">
         <Link href="/">
           <Image alt="Logo" src={Logo} width={160} />
         </Link>
         <div className="flex w-full max-w-sm items-center space-x-2">
-          <Input placeholder="поиск курса" />
+          <Input placeholder="поиск курса" className="w-full" />
           <Button>
             <MdSearch className="h-5 w-5" />
           </Button>
