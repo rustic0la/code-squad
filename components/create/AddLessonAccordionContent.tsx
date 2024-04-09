@@ -1,7 +1,7 @@
 import { FaPlus, FaRegTrashCan } from "react-icons/fa6";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { useCallback, useState } from "react";
+import React, { useCallback, useState } from "react";
 import { Lesson } from "@prisma/client";
 import { createLesson } from "@/actions/create";
 import Link from "next/link";
@@ -33,7 +33,7 @@ export const AddLessonAccordionContent = ({
   }, [courseId, inputValue, moduleId]);
 
   const handleDeleteLessonClick = useCallback(
-    (e: MouseEvent, id: string) => {
+    (e: React.MouseEvent<SVGElement, MouseEvent>, id: string) => {
       e.preventDefault();
       deleteLesson({ id }).then((lesson) =>
         setCurLessons((prev) => prev.filter((l) => l.id !== lesson.id)),
@@ -46,7 +46,7 @@ export const AddLessonAccordionContent = ({
     <div>
       <ol className="my-2 flex flex-col gap-0.5 mx-4">
         {curLessons.map(({ title, id }, index) => (
-          <Link key={{ id }} href={`/courses/${courseId}/${id}`}>
+          <Link key={id} href={`/courses/${courseId}/${id}`}>
             <div
               className="hover:bg-slate-200 p-2 hover:rounded-lg flex justify-between items-center"
               onMouseEnter={() => setActiveControls(index)}

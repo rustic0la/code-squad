@@ -3,10 +3,10 @@ import { Button } from "@/components/ui/button";
 
 export const AddCourseCard = () => {
   return (
-    <div className="w-max h-[200px] border-dashed border-4 border-current rounded-lg flex justify-center items-center m-3">
-      <Link href="/courses/new">
+    <Link href="/courses/new">
+      <div className="w-44 h-56 border-dashed border-4 border-current rounded-lg flex justify-center items-center">
         <Button className="m-2">Создать</Button>
-      </Link>
-    </div>
+      </div>
+    </Link>
   );
 };

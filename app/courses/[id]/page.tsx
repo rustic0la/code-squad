@@ -2,31 +2,46 @@
 
 import { useParams } from "next/navigation";
 import { useEffect, useState } from "react";
-import { fetchModules } from "@/actions";
+import { fetchCourseById } from "@/actions";
 import { AddModulesAccordion } from "@/components/create/AddModulesAccordion";
 import { Prisma } from "@prisma/client";
-import ModuleGetPayload = Prisma.ModuleGetPayload;
+import CourseGetPayload = Prisma.CourseGetPayload;
 
-export type Module = ModuleGetPayload<{
+export type Course = CourseGetPayload<{
   include: {
-    lessons: true;
+    modules: {
+      include: {
+        lessons: true;
+      };
+    };
   };
 }>;
 
 export default function CoursePage() {
   const { id } = useParams();
-  const [modules, setModules] = useState<Module[]>([]);
+  const [course, setCourse] = useState<Course | null>();
   const [pending, setPending] = useState(false);
 
   useEffect(() => {
     setPending(true);
-    fetchModules({ courseId: id as string })
-      .then((data) => setModules(data))
+    fetchCourseById({ id: id as string })
+      .then((data) => setCourse(data))
       .then(() => setPending(false));
   }, [id]);
 
   if (pending) {
     return <h1>LOADING</h1>;
   }
-  return <AddModulesAccordion modules={modules} setModules={setModules} />;
+
+  if (!course) {
+    return null;
+  }
+
+  return (
+    <>
+      <h1>{course.title}</h1>
+      <h3>{course.description}</h3>
+      <AddModulesAccordion modules={course.modules} setModules={() => {}} />
+    </>
+  );
 }

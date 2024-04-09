@@ -71,8 +71,8 @@ model Module {
   id       String     @id @default(cuid())
   title    String
   lessons  Lesson[]
-  courseId String
-  course   Course     @relation(fields: [courseId], references: [id])
+  courseId String?
+  course   Course?    @relation(fields: [courseId], references: [id], onDelete: SetNull)
   Progress Progress[]
 }
 
@@ -80,10 +80,10 @@ model Lesson {
   id        String      @id @default(cuid())
   title     String
   content   Paragraph[]
-  courseId  String
-  moduleId  String
-  module    Module      @relation(fields: [moduleId], references: [id])
-  course    Course      @relation(fields: [courseId], references: [id])
+  courseId  String?
+  moduleId  String?
+  module    Module?     @relation(fields: [moduleId], references: [id], onDelete: SetNull)
+  course    Course?     @relation(fields: [courseId], references: [id], onDelete: SetNull)
   createdAt DateTime    @default(now())
   Progress  Progress[]
   Quiz      Quiz[]
@@ -99,7 +99,7 @@ model Paragraph {
   id       String      @id @default(cuid())
   type     ContentType
   content  String
-  Lesson   Lesson?     @relation(fields: [lessonId], references: [id])
+  Lesson   Lesson?     @relation(fields: [lessonId], references: [id], onDelete: Cascade)
   lessonId String?
 }
 

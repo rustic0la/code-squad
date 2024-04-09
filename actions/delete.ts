@@ -1,11 +1,9 @@
 "use server";
 
 import { prisma } from "@/lib/db";
-import { redirect } from "next/navigation";
 
 export const deleteCourse = async ({ id }: { id: string }) => {
-  await prisma.course.delete({ where: { id } });
-  redirect("/courses");
+  return prisma.course.delete({ where: { id } });
 };
 
 export const deleteModule = async ({ id }: { id: string }) => {

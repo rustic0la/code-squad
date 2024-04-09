@@ -4,7 +4,7 @@ import {
   AccordionItem,
   AccordionTrigger,
 } from "@/components/ui/accordion";
-import { SetStateAction, useCallback, useState } from "react";
+import React, { SetStateAction, useCallback, useState } from "react";
 import { useParams } from "next/navigation";
 import { Input } from "@/components/ui/input";
 import { FaPlus, FaRegTrashCan } from "react-icons/fa6";
@@ -13,7 +13,14 @@ import { Button } from "@/components/ui/button";
 import { createModule } from "@/actions/create";
 import { deleteModule } from "@/actions/delete";
 import { AddLessonAccordionContent } from "@/components/create/AddLessonAccordionContent";
-import { Module } from "@/app/courses/[id]/page";
+import { Prisma } from ".prisma/client";
+import ModuleGetPayload = Prisma.ModuleGetPayload;
+
+export type Module = ModuleGetPayload<{
+  include: {
+    lessons: true;
+  };
+}>;
 
 export const AddModulesAccordion = ({
   modules,
@@ -37,7 +44,7 @@ export const AddModulesAccordion = ({
   }, [courseId, inputValue, setModules]);
 
   const handleDeleteModuleClick = useCallback(
-    (e: MouseEvent, id: string) => {
+    (e: React.MouseEvent, id: string) => {
       e.preventDefault();
       deleteModule({ id }).then((module) =>
         setModules((prev) => prev.filter((m) => m.id !== module.id)),
@@ -48,27 +55,8 @@ export const AddModulesAccordion = ({
 
   return (
     <>
-      <div className="w-3/4 mx-auto flex justify-between items-center">
-        <Input
-          placeholder="Введите название модуля"
-          unstyled
-          value={inputValue}
-          className="w-full border-b-4 border border-current"
-          onChange={(e) => {
-            setInputValue(e.target.value);
-          }}
-        />
-        <Button
-          className="w-44 flex gap-2"
-          size="sm"
-          onClick={addModule}
-          disabled={!inputValue.trim()}
-        >
-          <FaPlus />
-          Добавить модуль
-        </Button>
-      </div>
-      <Accordion type="single" className="w-3/4 mx-auto mt-6" collapsible>
+      <h2>Содержание:</h2>
+      <Accordion type="single" collapsible>
         {modules.map(({ title, id, lessons }, index) => (
           <AccordionItem
             value={title}
@@ -99,6 +87,26 @@ export const AddModulesAccordion = ({
           </AccordionItem>
         ))}
       </Accordion>
+      <div className="mt-6 flex justify-between items-center">
+        <Input
+          placeholder="Введите название модуля"
+          unstyled
+          value={inputValue}
+          className="w-full border-b-4 border border-current"
+          onChange={(e) => {
+            setInputValue(e.target.value);
+          }}
+        />
+        <Button
+          className="w-44 flex gap-2"
+          size="sm"
+          onClick={addModule}
+          disabled={!inputValue.trim()}
+        >
+          <FaPlus />
+          Добавить модуль
+        </Button>
+      </div>
     </>
   );
 };
