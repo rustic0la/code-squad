@@ -11,7 +11,7 @@ export default async function CreatePage() {
   };
 
   return (
-    <div className="flex gap-3 flex-wrap">
+    <div className="flex gap-5 flex-wrap">
       {courses.map((c) => (
         <CourseCard course={c} key={c.id} />
       ))}
