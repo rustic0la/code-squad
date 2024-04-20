@@ -42,8 +42,7 @@ export const AddModulesAccordion = ({
     };
 
     if (inputValue) {
-      cb();
-      setInputValue("");
+      cb().then(() => setInputValue(""));
     }
   }, [courseId, inputValue, setModules]);
 

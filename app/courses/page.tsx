@@ -18,8 +18,7 @@ export default function CreatePage() {
       setCourses(courses);
     };
     setPending(true);
-    cb();
-    setPending(false);
+    cb().then(() => setPending(false));
   }, []);
 
   const handleDeleteCourseClick = useCallback((e: MouseEvent, id: string) => {
@@ -34,14 +33,13 @@ export default function CreatePage() {
 
   return (
     <>
-      <div className="flex gap-5 flex-wrap">
+      <div className="flex gap-5 flex-wrap w-3/4 mx-auto">
         {pending ? (
           <div className="flex justify-center items-center w-full h-full">
             <Spinner />
           </div>
         ) : (
           <>
-            {/*  TODO: make grid of three elements, increase padding*/}
             {courses.map((c) => (
               <CourseCard
                 course={c}

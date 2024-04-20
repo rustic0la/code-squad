@@ -23,7 +23,7 @@ export const Avatar = ({ image, name }: AvatarProps) => {
   return (
     <Popover>
       <PopoverTrigger>
-        <AvatarWrapper>
+        <AvatarWrapper className="border-2 border-slate-500">
           {image && <AvatarImage src={image} />}
           {name && <AvatarFallback>{name[0].toUpperCase()}</AvatarFallback>}
         </AvatarWrapper>

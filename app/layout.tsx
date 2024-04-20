@@ -1,8 +1,13 @@
 import type { Metadata } from "next";
 import { Merriweather } from "next/font/google";
-import { ReactNode } from "react";
+import React, { ReactNode } from "react";
 import "./globals.css";
-import { Navbar } from "@/components/Navbar";
+import { Dialog, DialogTrigger } from "@/components/ui/dialog";
+import { Button } from "@/components/ui/button";
+import { Avatar } from "@/components/Avatar";
+import { Login } from "@/components/Login";
+import { Sidebar } from "@/components/Sidebar";
+import { auth } from "@/lib/auth";
 
 const font = Merriweather({ weight: ["400", "700"], subsets: ["cyrillic"] });
 
@@ -15,6 +20,8 @@ export default async function RootLayout({
 }: {
   children: ReactNode;
 }) {
+  const session = await auth();
+
   return (
     <html lang="en">
       <head>
@@ -38,8 +45,20 @@ export default async function RootLayout({
         />
       </head>
       <body className={font.className}>
-        <Navbar />
-        <div className="w-full fixed bg-gray-100 h-[calc(100vh-65px)] top-[60px] p-10 overflow-scroll">
+        <div className="fixed right-0 top-0 m-2">
+          <Dialog>
+            <DialogTrigger asChild>
+              {!session?.user ? (
+                <Button size="sm">Войти</Button>
+              ) : (
+                <Avatar image={session?.user.image} name={session?.user.name} />
+              )}
+            </DialogTrigger>
+            {!session?.user && <Login />}
+          </Dialog>
+        </div>
+        <Sidebar />
+        <div className="w-screen bg-gray-100 h-screen overflow-scroll p-6 pl-12">
           {children}
         </div>
       </body>

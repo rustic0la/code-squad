@@ -1,13 +1,9 @@
-import { Sidebar } from "@/components/Sidebar";
-import { Spinner } from "@/components/ui/Spinner";
+import React from "react";
 
-export default function Home() {
+export default async function Home() {
   return (
-    <div className="flex">
-      <Sidebar />
-      <div className="w-full left-[176px] relative h-screen bg-gray-100">
-        <Spinner />
-      </div>
-    </div>
+    <>
+      <div className="w-full left-[176px] relative bg-gray-100"></div>
+    </>
   );
 }

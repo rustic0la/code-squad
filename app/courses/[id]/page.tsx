@@ -29,8 +29,7 @@ export default function CoursePage() {
       setCourse(course);
     };
     setPending(true);
-    cb();
-    setPending(false);
+    cb().then(() => setPending(false));
   }, [id]);
 
   if (pending) {
@@ -42,11 +41,11 @@ export default function CoursePage() {
   }
 
   return (
-    <>
+    <div className="m-6 mx-10">
       <h1>{course.title}</h1>
       <h2>{course.description}</h2>
       <h3>Содержание:</h3>
       <AddModulesAccordion moduleList={course.modules} />
-    </>
+    </div>
   );
 }
