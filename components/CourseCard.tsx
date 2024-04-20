@@ -1,21 +1,17 @@
 import Link from "next/link";
 import Image from "next/image";
-import React, { useState } from "react";
+import React, { MouseEvent, useState } from "react";
 import { Course } from "@prisma/client";
 import { Card, CardContent, CardFooter } from "@/components/ui/card";
 import { BsCardImage } from "react-icons/bs";
 import { FaRegTrashCan } from "react-icons/fa6";
-import { Button } from "@/components/ui/button";
 
 export const CourseCard = ({
   course,
   onClick,
 }: {
   course: Course;
-  onClick: (
-    e: React.MouseEvent<HTMLButtonElement, MouseEvent>,
-    id: string,
-  ) => void;
+  onClick: (e: MouseEvent, id: string) => void;
 }) => {
   const [showDelete, setShowDelete] = useState(false);
 
@@ -37,14 +33,10 @@ export const CourseCard = ({
             <BsCardImage className="w-20 h-16" />
           )}
           {showDelete && (
-            <Button
-              size="icon"
-              variant="outline"
+            <FaRegTrashCan
               onClick={(e) => onClick(e, course.id)}
-              className="absolute right-1.5 top-1.5"
-            >
-              <FaRegTrashCan />
-            </Button>
+              className="absolute right-3 top-3 hover:text-red-600"
+            />
           )}
         </CardContent>
         <CardFooter className="flex flex-col gap-2 p-2">

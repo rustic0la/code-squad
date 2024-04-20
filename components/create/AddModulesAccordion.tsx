@@ -4,7 +4,7 @@ import {
   AccordionItem,
   AccordionTrigger,
 } from "@/components/ui/accordion";
-import React, { SetStateAction, useCallback, useState } from "react";
+import React, { MouseEvent, useCallback, useState } from "react";
 import { useParams } from "next/navigation";
 import { Input } from "@/components/ui/input";
 import { FaPlus, FaRegTrashCan } from "react-icons/fa6";
@@ -23,28 +23,32 @@ export type Module = ModuleGetPayload<{
 }>;
 
 export const AddModulesAccordion = ({
-  modules,
-  setModules,
+  moduleList,
 }: {
-  modules: Module[];
-  setModules: (value: SetStateAction<Module[]>) => void;
+  moduleList: Module[];
 }) => {
   const { id: courseId } = useParams();
   const [inputValue, setInputValue] = useState("");
+  const [modules, setModules] = useState(() => moduleList);
   const [activeControls, setActiveControls] = useState<number | undefined>();
 
   const addModule = useCallback(() => {
-    if (inputValue) {
-      createModule({
+    const cb = async () => {
+      const newModule = await createModule({
         courseId: courseId as string,
         title: inputValue,
-      }).then((newModule) => setModules((prev) => [...prev, newModule]));
+      });
+      setModules((prev) => [...prev, newModule]);
+    };
+
+    if (inputValue) {
+      cb();
       setInputValue("");
     }
   }, [courseId, inputValue, setModules]);
 
   const handleDeleteModuleClick = useCallback(
-    (e: React.MouseEvent, id: string) => {
+    (e: MouseEvent, id: string) => {
       e.preventDefault();
       deleteModule({ id }).then((module) =>
         setModules((prev) => prev.filter((m) => m.id !== module.id)),
@@ -55,7 +59,6 @@ export const AddModulesAccordion = ({
 
   return (
     <>
-      <h2>Содержание:</h2>
       <Accordion type="single" collapsible>
         {modules.map(({ title, id, lessons }, index) => (
           <AccordionItem
@@ -69,8 +72,9 @@ export const AddModulesAccordion = ({
                 {title}
                 {activeControls === index && (
                   <div className="flex gap-2">
-                    <MdModeEdit />
+                    <MdModeEdit className="hover:text-blue-600" />
                     <FaRegTrashCan
+                      className="hover:text-red-600"
                       onClick={(e) => handleDeleteModuleClick(e, id)}
                     />
                   </div>

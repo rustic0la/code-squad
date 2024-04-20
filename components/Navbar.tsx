@@ -13,7 +13,7 @@ export const Navbar = async () => {
 
   return (
     <Dialog>
-      <div className="fixed bg-slate-200 w-full p-2 flex items-center justify-between">
+      <div className="fixed bg-gradient-to-r from-gray-800 w-full p-2 flex items-center justify-between">
         <Link href="/">
           <Image alt="Logo" src={Logo} width={160} />
         </Link>

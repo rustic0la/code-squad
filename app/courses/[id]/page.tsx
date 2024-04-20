@@ -1,10 +1,11 @@
 "use client";
 
 import { useParams } from "next/navigation";
-import { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { fetchCourseById } from "@/actions";
 import { AddModulesAccordion } from "@/components/create/AddModulesAccordion";
 import { Prisma } from "@prisma/client";
+import { Spinner } from "@/components/ui/Spinner";
 import CourseGetPayload = Prisma.CourseGetPayload;
 
 export type Course = CourseGetPayload<{
@@ -23,14 +24,17 @@ export default function CoursePage() {
   const [pending, setPending] = useState(false);
 
   useEffect(() => {
+    const cb = async () => {
+      const course = await fetchCourseById({ id: id as string });
+      setCourse(course);
+    };
     setPending(true);
-    fetchCourseById({ id: id as string })
-      .then((data) => setCourse(data))
-      .then(() => setPending(false));
+    cb();
+    setPending(false);
   }, [id]);
 
   if (pending) {
-    return <h1>LOADING</h1>;
+    return <Spinner />;
   }
 
   if (!course) {
@@ -40,8 +44,9 @@ export default function CoursePage() {
   return (
     <>
       <h1>{course.title}</h1>
-      <h3>{course.description}</h3>
-      <AddModulesAccordion modules={course.modules} setModules={() => {}} />
+      <h2>{course.description}</h2>
+      <h3>Содержание:</h3>
+      <AddModulesAccordion moduleList={course.modules} />
     </>
   );
 }

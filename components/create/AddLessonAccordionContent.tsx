@@ -1,12 +1,13 @@
 import { FaPlus, FaRegTrashCan } from "react-icons/fa6";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import React, { useCallback, useState } from "react";
+import React, { MouseEvent, useCallback, useState } from "react";
 import { Lesson } from "@prisma/client";
 import { createLesson } from "@/actions/create";
 import Link from "next/link";
 import { MdModeEdit } from "react-icons/md";
 import { deleteLesson } from "@/actions/delete";
+import { Spinner } from "@/components/ui/Spinner";
 
 export const AddLessonAccordionContent = ({
   moduleId,
@@ -20,24 +21,35 @@ export const AddLessonAccordionContent = ({
   const [inputValue, setInputValue] = useState("");
   const [curLessons, setCurLessons] = useState<Lesson[]>(lessons);
   const [activeControls, setActiveControls] = useState<number | undefined>();
+  const [pending, setPending] = useState(false);
 
   const addLesson = useCallback(() => {
-    if (inputValue) {
-      createLesson({
+    const cb = async (title: string) => {
+      const newLesson = await createLesson({
         courseId: courseId as string,
         moduleId,
-        title: inputValue,
-      }).then((newLesson) => setCurLessons((prev) => [...prev, newLesson]));
+        title,
+      });
+      setCurLessons((prev) => [...prev, newLesson]);
+    };
+
+    if (inputValue) {
+      setPending(true);
+      cb(inputValue);
       setInputValue("");
+      setPending(false);
     }
   }, [courseId, inputValue, moduleId]);
 
   const handleDeleteLessonClick = useCallback(
-    (e: React.MouseEvent<SVGElement, MouseEvent>, id: string) => {
+    (e: MouseEvent, id: string) => {
+      const cb = async () => {
+        const lesson = await deleteLesson({ id });
+        setCurLessons((prev) => prev.filter((l) => l.id !== lesson.id));
+      };
+
       e.preventDefault();
-      deleteLesson({ id }).then((lesson) =>
-        setCurLessons((prev) => prev.filter((l) => l.id !== lesson.id)),
-      );
+      cb();
     },
     [setCurLessons],
   );
@@ -83,8 +95,14 @@ export const AddLessonAccordionContent = ({
           onClick={addLesson}
           disabled={!inputValue.trim()}
         >
-          <FaPlus />
-          Добавить урок
+          {pending ? (
+            <Spinner />
+          ) : (
+            <>
+              <FaPlus />
+              Добавить урок
+            </>
+          )}
         </Button>
       </div>
     </div>
