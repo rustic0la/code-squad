@@ -33,7 +33,11 @@ export default function CoursePage() {
   }, [id]);
 
   if (pending) {
-    return <Spinner />;
+    return (
+      <div className="flex justify-center items-center w-full h-full">
+        <Spinner />
+      </div>
+    );
   }
 
   if (!course) {

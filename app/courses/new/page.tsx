@@ -24,7 +24,7 @@ export default function NewCoursePage() {
     <form onSubmit={handleSubmit}>
       <div className="flex m-6 flex-col gap-6 w-1/2 justify-center mx-auto">
         <h3 className="scroll-m-20 text-xl font-semibold tracking-tight">
-          Введите название курса
+          название курса
         </h3>
         <Input
           className="w-full"
@@ -32,7 +32,7 @@ export default function NewCoursePage() {
           onChange={(e) => setTitle(e.target.value)}
         />
         <h3 className="scroll-m-20 text-xl font-semibold tracking-tight">
-          Добавьте описание
+          добавьте описание
         </h3>
         <Textarea
           placeholder="Добавьте описание"
@@ -44,7 +44,7 @@ export default function NewCoursePage() {
           className="flex gap-2"
           disabled={!title}
         >
-          Далее
+          далее
           <FaArrowRight />
         </Button>
       </div>

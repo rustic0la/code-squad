@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Merriweather } from "next/font/google";
+import { Zen_Maru_Gothic } from "next/font/google";
 import React, { ReactNode } from "react";
 import "./globals.css";
 import { Dialog, DialogTrigger } from "@/components/ui/dialog";
@@ -8,8 +8,9 @@ import { Avatar } from "@/components/Avatar";
 import { Login } from "@/components/Login";
 import { Sidebar } from "@/components/Sidebar";
 import { auth } from "@/lib/auth";
+import { ThemeProvider } from "@/context/ThemeProvider";
 
-const font = Merriweather({ weight: ["400", "700"], subsets: ["cyrillic"] });
+const font = Zen_Maru_Gothic({ weight: "500", subsets: ["cyrillic"] });
 
 export const metadata: Metadata = {
   title: "CodeSquad",
@@ -45,22 +46,27 @@ export default async function RootLayout({
         />
       </head>
       <body className={font.className}>
-        <div className="fixed right-0 top-0 m-2">
-          <Dialog>
-            <DialogTrigger asChild>
-              {!session?.user ? (
-                <Button size="sm">Войти</Button>
-              ) : (
-                <Avatar image={session?.user.image} name={session?.user.name} />
-              )}
-            </DialogTrigger>
-            {!session?.user && <Login />}
-          </Dialog>
-        </div>
-        <Sidebar />
-        <div className="w-screen bg-gray-100 h-screen overflow-scroll p-6 pl-12">
-          {children}
-        </div>
+        <ThemeProvider>
+          <div className="fixed right-0 top-0 m-2">
+            <Dialog>
+              <DialogTrigger asChild>
+                {!session?.user ? (
+                  <Button size="sm">Войти</Button>
+                ) : (
+                  <Avatar
+                    image={session?.user.image}
+                    name={session?.user.name}
+                  />
+                )}
+              </DialogTrigger>
+              {!session?.user && <Login />}
+            </Dialog>
+          </div>
+          <Sidebar />
+          <div className="w-screen bg-gray-100 dark:bg-gray-900 h-screen overflow-scroll p-6 pl-12">
+            {children}
+          </div>
+        </ThemeProvider>
       </body>
     </html>
   );

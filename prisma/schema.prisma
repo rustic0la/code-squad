@@ -98,6 +98,7 @@ enum ContentType {
 
 model Paragraph {
   id       String      @id @default(cuid())
+  index    String
   type     ContentType
   content  String
   Lesson   Lesson?     @relation(fields: [lessonId], references: [id], onDelete: Cascade)

@@ -60,7 +60,7 @@ export const AddLessonAccordionContent = ({
         {curLessons.map(({ title, id }, index) => (
           <Link key={id} href={`/courses/${courseId}/${id}`}>
             <div
-              className="hover:bg-slate-200 p-2 hover:rounded-lg flex justify-between items-center"
+              className="hover:bg-slate-200 hover:dark:bg-slate-600 p-2 hover:rounded-lg flex justify-between items-center"
               onMouseEnter={() => setActiveControls(index)}
               onMouseLeave={() => setActiveControls(undefined)}
             >
@@ -100,7 +100,7 @@ export const AddLessonAccordionContent = ({
           ) : (
             <>
               <FaPlus />
-              Добавить урок
+              добавить урок
             </>
           )}
         </Button>

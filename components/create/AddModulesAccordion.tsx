@@ -92,10 +92,10 @@ export const AddModulesAccordion = ({
       </Accordion>
       <div className="mt-6 flex justify-between items-center">
         <Input
-          placeholder="Введите название модуля"
+          placeholder="название модуля"
           unstyled
           value={inputValue}
-          className="w-full border-b-4 border border-current"
+          className="w-full border-b-4 border border-current  dark:text-gray-300"
           onChange={(e) => {
             setInputValue(e.target.value);
           }}
@@ -107,7 +107,7 @@ export const AddModulesAccordion = ({
           disabled={!inputValue.trim()}
         >
           <FaPlus />
-          Добавить модуль
+          добавить модуль
         </Button>
       </div>
     </>
